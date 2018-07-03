@@ -1,8 +1,8 @@
 package multichain
 
 import (
-	"fmt"
 	"flag"
+	"fmt"
 )
 
 var client *Client
@@ -11,7 +11,7 @@ func init() {
 
 	chain := flag.String("chain", "", "is the name of the chain")
 	host := flag.String("host", "localhost", "is a string for the hostname")
-	port := flag.String("port", "80", "is a string for the host port")
+	port := flag.Int("port", 80, "is a string for the host port")
 	username := flag.String("username", "multichainrpc", "is a string for the username")
 	password := flag.String("password", "12345678", "is a string for the password")
 
@@ -19,11 +19,12 @@ func init() {
 
 	client = NewClient(
 		*chain,
-		*host,
-		*port,
 		*username,
 		*password,
-	)
+	).ViaNode(
+		*host,
+		*port,
+	).DebugMode()
 
-	fmt.Println(client.debug())
+	fmt.Println(client.IsDebugMode())
 }
